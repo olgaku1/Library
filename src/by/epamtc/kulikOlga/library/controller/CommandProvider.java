@@ -24,7 +24,11 @@ final class CommandProvider {
         repository.put(CommandName.FIND_BY_GENRE, new FindByGenre());
         repository.put(CommandName.FIND_BY_ID, new FindByID());
         repository.put(CommandName.FIND_BY_TITLE, new FindByTitle());
-        repository.put(CommandName.VIEW_ALL_BOOKS, new ViewAllBooks());
+        repository.put(CommandName.FIND_ALL_BOOKS, new FindAllBooks());
+    }
+
+    public void setCommand(CommandName commandName, Command command) {
+        repository.put(commandName, command);
     }
 
     Command getCommand(String name) {

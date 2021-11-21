@@ -12,13 +12,14 @@ public class SignIn implements Command {
         String login = arrayOfRequest[1];
         String password = arrayOfRequest[2];
 
-        String response = "User authenticated";
+        String welcomeMessage = "Welcome, " + login + "!";
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UserService userService = serviceFactory.getUserService();
 
         userService.signIn(login, password);
-
+        String listOfCommands = userService.checkPermission();
+        String response = welcomeMessage + "\nCommands that you can execute:\n" + listOfCommands;
         return response;
     }
 }

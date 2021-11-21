@@ -16,9 +16,11 @@ public final class ServiceFactory {
 
     }
 
-    public static ServiceFactory getInstance() {
+    public static  ServiceFactory getInstance() {
         return instance;
     }
+
+
 
     public BookService getBookService() {
         return bookService;

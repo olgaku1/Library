@@ -1,17 +1,10 @@
 package by.epamtc.kulikOlga.library.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User implements Serializable {
     private static final long serialVersionUID = -4136768725941180570L;
     private static final String DIVIDER = "/";
-    private static final String DOUBLE_DIVIDER = "//";
 
 
     private String login;
@@ -38,18 +31,13 @@ public class User implements Serializable {
     }
 
     public User(String userParameters) {
-        Pattern pattern = Pattern.compile(DIVIDER + "\\w+" + DIVIDER);
-        Matcher matcher = pattern.matcher(userParameters);
+        String[] parameters = userParameters.split(DIVIDER);
 
-        List<String> parameters = new ArrayList<>();
-        while (matcher.find()) {
-            parameters.add(matcher.group(0).substring(1, matcher.group(0).length() - 1));
-        }
-        login = parameters.get(0);
-        password = parameters.get(1);
-        name = parameters.get(2);
-        surname = parameters.get(3);
-        userRole = UserRole.valueOf(parameters.get(4));
+        this.login = parameters[0];
+        this.password = parameters[1];
+        this.name = parameters[2];
+        surname = parameters[3];
+        userRole = UserRole.valueOf(parameters[4].toUpperCase());
     }
 
     public String getLogin() {
@@ -92,15 +80,16 @@ public class User implements Serializable {
         this.userRole = userRole;
     }
 
-    public String writeUserParamsToFile() {
+    public StringBuilder userParamsToFile() {
+        StringBuilder user = new StringBuilder();
+        user.append(login).append(DIVIDER)
+                .append(password).append(DIVIDER)
+                .append(name).append(DIVIDER)
+                .append(surname).append(DIVIDER)
+                .append(userRole.name());
 
-        return DIVIDER + login + DOUBLE_DIVIDER +
-                password + DOUBLE_DIVIDER +
-                name + DOUBLE_DIVIDER +
-                surname + DOUBLE_DIVIDER +
-                userRole.toString() + DIVIDER + "\n";
+        return user;
     }
-
 
 
     @Override
@@ -155,7 +144,9 @@ public class User implements Serializable {
         return getClass().getSimpleName() +
                 "{login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", userRole='" + userRole.toString() + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", userRole='" + userRole.name() + '\'' +
                 '}';
     }
 }

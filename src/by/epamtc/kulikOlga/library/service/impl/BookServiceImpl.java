@@ -1,18 +1,26 @@
 package by.epamtc.kulikOlga.library.service.impl;
 
 import by.epamtc.kulikOlga.library.bean.Book;
+import by.epamtc.kulikOlga.library.bean.User;
+import by.epamtc.kulikOlga.library.bean.UserRole;
 import by.epamtc.kulikOlga.library.dao.BookDAO;
 import by.epamtc.kulikOlga.library.dao.exception.DAOException;
 import by.epamtc.kulikOlga.library.dao.factory.DAOFactory;
 import by.epamtc.kulikOlga.library.service.BookService;
 import by.epamtc.kulikOlga.library.service.exception.ServiceException;
+import by.epamtc.kulikOlga.library.service.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.epamtc.kulikOlga.library.service.impl.CurrentUser.isCorrectUserRole;
 import static by.epamtc.kulikOlga.library.service.validation.Validator.*;
 
+
 public class BookServiceImpl implements BookService {
+    private CurrentUser currentUser;
+    private Validator validator;
+
 
     @Override
     public void addNewBook(String title, String author, String genre) throws ServiceException {
@@ -25,16 +33,19 @@ public class BookServiceImpl implements BookService {
         if (!isValidGenre(genre)) {
             throw new ServiceException("Incorrect name of genre");
         }
+        if (isCorrectUserRole()) {
+            Book book = new Book(title, author, genre);
+            book.setBookID(book.hashCode());
 
-        Book book = new Book(title, author, genre);
-        book.setBookID(book.hashCode());
-
-        try {
-            DAOFactory daoObjectFactory = DAOFactory.getInstance();
-            BookDAO bookDAO = daoObjectFactory.getBookDAO();
-            bookDAO.addBook(book);
-        } catch (DAOException e) {
-            throw new ServiceException("Exception of adding a new book", e);
+            try {
+                DAOFactory daoObjectFactory = DAOFactory.getInstance();
+                BookDAO bookDAO = daoObjectFactory.getBookDAO();
+                bookDAO.addBook(book);
+            } catch (DAOException e) {
+                throw new ServiceException("Exception of adding a new book", e);
+            }
+        } else {
+            throw new ServiceException("You do not have the correct rights");
         }
     }
 
@@ -107,24 +118,28 @@ public class BookServiceImpl implements BookService {
         if (!isValidBookID(bookID)) {
             throw new ServiceException("Incorrect id form");
         }
-        Book book = findBookByID(bookID);
-        try {
-            DAOFactory daoObjectFactory = DAOFactory.getInstance();
-            BookDAO bookDAO = daoObjectFactory.getBookDAO();
-            bookDAO.removeBook(book);
-        } catch (DAOException e) {
-            throw new ServiceException("Exception of removing book", e);
+        if (isCorrectUserRole()) {
+            Book book = findBookByID(bookID);
+            try {
+                DAOFactory daoObjectFactory = DAOFactory.getInstance();
+                BookDAO bookDAO = daoObjectFactory.getBookDAO();
+                bookDAO.removeBook(book);
+            } catch (DAOException e) {
+                throw new ServiceException("Exception of removing book", e);
+            }
+        } else {
+            throw new ServiceException("You do not have the correct rights");
         }
 
     }
 
     @Override
-    public List<Book> viewAllBooks() throws ServiceException {
+    public List<Book> findAllBooks() throws ServiceException {
         List<Book> result;
         try {
             DAOFactory daoObjectFactory = DAOFactory.getInstance();
             BookDAO bookDAO = daoObjectFactory.getBookDAO();
-            result = bookDAO.viewAllBooks();
+            result = bookDAO.findAllBooks();
 
         } catch (DAOException e) {
             throw new ServiceException("Exception of reading all books", e);
@@ -146,17 +161,20 @@ public class BookServiceImpl implements BookService {
         if (!isValidGenre(newGenre)) {
             throw new ServiceException("Incorrect name of genre");
         }
+        if (isCorrectUserRole()) {
+            Book book = findBookByID(bookID);
+            Book newBook = new Book(newTitle, newAuthor, newGenre);
 
-        Book book = findBookByID(bookID);
-        Book newBook = new Book(newTitle, newAuthor, newGenre);
-
-        try {
-            DAOFactory daoObjectFactory = DAOFactory.getInstance();
-            BookDAO bookDAO = daoObjectFactory.getBookDAO();
-            bookDAO.removeBook(book);
-            addNewBook(newTitle, newAuthor, newGenre);
-        } catch (DAOException e) {
-            throw new ServiceException("Exception of editing book", e);
+            try {
+                DAOFactory daoObjectFactory = DAOFactory.getInstance();
+                BookDAO bookDAO = daoObjectFactory.getBookDAO();
+                bookDAO.removeBook(book);
+                addNewBook(newTitle, newAuthor, newGenre);
+            } catch (DAOException e) {
+                throw new ServiceException("Exception of editing book", e);
+            }
+        } else {
+            throw new ServiceException("You do not have the correct rights");
         }
     }
 }

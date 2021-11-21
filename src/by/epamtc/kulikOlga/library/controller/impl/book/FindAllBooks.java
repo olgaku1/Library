@@ -5,17 +5,17 @@ import by.epamtc.kulikOlga.library.service.BookService;
 import by.epamtc.kulikOlga.library.service.exception.ServiceException;
 import by.epamtc.kulikOlga.library.service.factory.ServiceFactory;
 
-public class FindByAuthor implements Command {
+public class FindAllBooks implements Command {
     @Override
     public String execute(String request) throws ServiceException {
-        String[] arrayOfRequest = request.split("/");
-        String author = arrayOfRequest[1];
-        String  response;
+
+        String response;
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         BookService bookService = serviceFactory.getBookService();
 
-        response = "Found books:\n" + bookService.findBookByAuthor(author);
+        response = "Found books:\n" + bookService.findAllBooks();
+
         return response;
     }
 }

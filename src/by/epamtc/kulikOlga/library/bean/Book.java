@@ -1,16 +1,11 @@
 package by.epamtc.kulikOlga.library.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Book implements Serializable {
     private static final long serialVersionUID = 8759798872078100314L;
 
     private static final String DIVIDER = "/";
-    private static final String DOUBLE_DIVIDER = "//";
 
     private int bookID;
     private String title;
@@ -35,17 +30,11 @@ public class Book implements Serializable {
     }
 
     public Book(String bookParameters) {
-        Pattern pattern = Pattern.compile(DIVIDER + "\\w+" + DIVIDER);
-        Matcher matcher = pattern.matcher(bookParameters);
-
-        List<String> parameters = new ArrayList<>();
-        while (matcher.find()) {
-            parameters.add(matcher.group(0).substring(1, matcher.group(0).length() - 1));
-        }
-        bookID = Integer.parseInt(parameters.get(0));
-        title = parameters.get(1);
-        author = parameters.get(2);
-        genre = parameters.get(3);
+        String[] parameters = bookParameters.split(DIVIDER);
+        bookID = Integer.parseInt(parameters[0]);
+        title = parameters[1];
+        author = parameters[2];
+        genre = parameters[3];
     }
 
     public long getBookID() {
@@ -80,11 +69,13 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
-    public String writeBookParamsToFile() {
-        return DIVIDER + bookID + DOUBLE_DIVIDER +
-                title + DOUBLE_DIVIDER +
-                author + DOUBLE_DIVIDER +
-                genre + DIVIDER + "\n";
+    public StringBuilder bookParamsToFile() {
+        StringBuilder book = new StringBuilder();
+        book.append(bookID).append(DIVIDER)
+                .append(title).append(DIVIDER)
+                .append(author).append(DIVIDER)
+                .append(genre);
+        return book;
     }
 
     @Override

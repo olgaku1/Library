@@ -13,6 +13,6 @@ public interface BookService {
     Book findBookByID(int bookID) throws ServiceException;
     void removeBook(int bookID) throws ServiceException;
     void  editBook(int bookID, String newTitle, String newAuthor, String newGenre) throws ServiceException;
-    List<Book> viewAllBooks() throws ServiceException;
+    List<Book> findAllBooks() throws ServiceException;
 
 }

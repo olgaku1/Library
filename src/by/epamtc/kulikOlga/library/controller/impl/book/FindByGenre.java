@@ -9,13 +9,13 @@ public class FindByGenre implements Command {
     @Override
     public String execute(String request) throws ServiceException {
         String[] arrayOfRequest = request.split("/");
-        String genre = arrayOfRequest[2];
-        String response = "Book founded";
+        String genre = arrayOfRequest[1];
+        String response;
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         BookService bookService = serviceFactory.getBookService();
 
-        bookService.findBookByGenre(genre);
+        response = "Found books:\n" + bookService.findBookByGenre(genre);
 
         return response;
     }

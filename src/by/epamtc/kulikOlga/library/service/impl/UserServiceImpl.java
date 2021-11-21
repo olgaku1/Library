@@ -7,19 +7,17 @@ import by.epamtc.kulikOlga.library.dao.exception.DAOException;
 import by.epamtc.kulikOlga.library.dao.factory.DAOFactory;
 import by.epamtc.kulikOlga.library.service.UserService;
 import by.epamtc.kulikOlga.library.service.exception.ServiceException;
+import by.epamtc.kulikOlga.library.service.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-
+import static by.epamtc.kulikOlga.library.service.impl.CurrentUser.isCorrectUserRole;
 import static by.epamtc.kulikOlga.library.service.validation.Validator.*;
 
 public class UserServiceImpl implements UserService {
-    @Override
-    public boolean isAdmin(User user) throws ServiceException {
-        return Objects.equals(user.getUserRole(), UserRole.ADMIN);
-    }
+   private Validator validator;
+   private CurrentUser currentUser;
 
     @Override
     public void registration(String login, String password, String name, String surname, String userRole) throws ServiceException {
@@ -39,20 +37,23 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Incorrect user role form");
         }
 
+        if (isCorrectUserRole()) {
+            User user = new User(login, password, name, surname, UserRole.valueOf(userRole.toUpperCase()));
 
-        User user = new User(login, password, name, surname, UserRole.valueOf(userRole));
-
-        try {
-            List<User> users = viewAllUsers();
-            if (!users.contains(user)) {
-                DAOFactory daoObjectFactory = DAOFactory.getInstance();
-                UserDAO userDAO = daoObjectFactory.getUserDAO();
-                userDAO.registration(user);
-            } else {
-                throw new ServiceException("Such user already exists");
+            try {
+                List<User> users = findAllUsers();
+                if (!users.contains(user)) {
+                    DAOFactory daoObjectFactory = DAOFactory.getInstance();
+                    UserDAO userDAO = daoObjectFactory.getUserDAO();
+                    userDAO.registration(user);
+                } else {
+                    throw new ServiceException("Such user already exists");
+                }
+            } catch (DAOException e) {
+                throw new ServiceException("Exception of registration new user", e);
             }
-        } catch (DAOException e) {
-            throw new ServiceException("Exception of registration new user", e);
+        } else {
+            throw new ServiceException("You do not have the correct rights");
         }
     }
 
@@ -66,23 +67,27 @@ public class UserServiceImpl implements UserService {
         }
 
         User result;
+
         try {
             DAOFactory daoObjectFactory = DAOFactory.getInstance();
             UserDAO userDAO = daoObjectFactory.getUserDAO();
             result = userDAO.signIn(login, password);
+
         } catch (DAOException e) {
             throw new ServiceException("Exception of authentication", e);
         }
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.setUser(result);
         return result;
     }
 
     @Override
-    public List<User> viewAllUsers() throws ServiceException {
+    public List<User> findAllUsers() throws ServiceException {
         List<User> result = new ArrayList<>();
         try {
             DAOFactory daoObjectFactory = DAOFactory.getInstance();
             UserDAO userDAO = daoObjectFactory.getUserDAO();
-            result = userDAO.viewAllUsers();
+            result = userDAO.readAllUsers();
         } catch (DAOException e) {
             throw new ServiceException("Exception of authentication", e);
         }
@@ -92,4 +97,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signOut() throws ServiceException {
     }
+
+    public String checkPermission() throws ServiceException {
+        String result;
+        try {
+            DAOFactory daoObjectFactory = DAOFactory.getInstance();
+            UserDAO userDAO = daoObjectFactory.getUserDAO();
+            result = userDAO.checkPermission();
+        } catch (DAOException e) {
+            throw new ServiceException("Exception of authentication", e);
+        }
+        return result;
+    }
+
 }

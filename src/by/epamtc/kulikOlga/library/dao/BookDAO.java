@@ -1,6 +1,7 @@
 package by.epamtc.kulikOlga.library.dao;
 
 import by.epamtc.kulikOlga.library.bean.Book;
+import by.epamtc.kulikOlga.library.bean.User;
 import by.epamtc.kulikOlga.library.dao.exception.DAOException;
 
 import java.util.List;
@@ -12,5 +13,6 @@ public interface BookDAO {
     List<Book> findByAuthor(String author) throws DAOException;
     List<Book> findByGenre(String genre) throws DAOException;
     Book findByID(int bookID) throws DAOException;
-    List<Book> viewAllBooks() throws DAOException;
+    List<Book> findAllBooks() throws DAOException;
+
 }

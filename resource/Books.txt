@@ -1,4 +1,7 @@
-/-1916733128//Lev Tolstoy//War and Peace//Epic roman/
-/1727016517//Andzhey Sapkovsky//The Witcher//fantasy/
-/1589293539//Clean Code//Robert Martin//Computer literature/
-/594583323//The adventures of Sherlock Holmes//Arthur Conan Doyle//Detective/
+1843440248/War and Peace/Lev Tolstoy/Epic roman
+1417106831/The Witcher/Andrzej Sapkowski/Fantasy
+-1299844371/The Hobbit, or There and Back Again/John R. R. Tolkien/Fantasy
+1327996877/Doctor Who/Douglas Adams/Fantastic
+594583323/The adventures of Sherlock Holmes/Arthur Conan Doyle/Detective
+854125656/Clean Code/Robert Martin/Computer literature
+-1883741967/1984/George Orwell/Dystopian novel

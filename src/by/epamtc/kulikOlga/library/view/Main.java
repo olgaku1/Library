@@ -1,23 +1,15 @@
 package by.epamtc.kulikOlga.library.view;
 
-
 import by.epamtc.kulikOlga.library.controller.Controller;
-import by.epamtc.kulikOlga.library.controller.command.Command;
-import by.epamtc.kulikOlga.library.controller.command.CommandName;
 import by.epamtc.kulikOlga.library.service.exception.ServiceException;
-
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         String request;
         String response;
-        System.out.println("Hello! To work with the electronic library, you need to log in");
+        System.out.println("Hello! To work with the electronic library, you need to log in.\n" +
+                "Please, enter the name of the command and the required information separated by a /");
         Scanner scanner = new Scanner(System.in);
         Controller controller = new Controller();
 
@@ -30,8 +22,5 @@ public class Main {
             }
             System.out.println(response);
         } while (!response.equals("End of the session"));
-
-
-
     }
 }

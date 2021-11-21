@@ -12,7 +12,6 @@ public class AddNewBook implements Command {
     @Override
     public String execute(String request) throws ServiceException {
         String[] arrayOfRequest = request.split("/");
-        System.out.println(Arrays.deepToString(arrayOfRequest));
         String title = arrayOfRequest[1];
         String author = arrayOfRequest[2];
         String genre = arrayOfRequest[3];

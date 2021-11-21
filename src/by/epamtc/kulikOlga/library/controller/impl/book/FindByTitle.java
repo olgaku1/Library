@@ -11,12 +11,12 @@ public class FindByTitle implements Command {
         String[] arrayOfRequest = request.split("/");
         String title = arrayOfRequest[1];
 
-        String response = "Book founded";
+        String response;
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         BookService bookService = serviceFactory.getBookService();
 
-        bookService.findBookByTitle(title);
+        response = "Found books:\n" + bookService.findBookByTitle(title);
 
         return response;
     }

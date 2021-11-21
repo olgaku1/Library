@@ -10,12 +10,12 @@ public class FindByID implements Command {
     public String execute(String request) throws ServiceException {
         String[] arrayOfRequest = request.split("/");
         int bookID = Integer.parseInt(arrayOfRequest[1]);
-        String response = "Book founded";
+        String response;
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         BookService bookService = serviceFactory.getBookService();
 
-        bookService.findBookByID(bookID);
+        response = "Found book:\n" + bookService.findBookByID(bookID);
 
         return response;
     }

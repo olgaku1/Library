@@ -10,7 +10,7 @@ public enum CommandName {
     FIND_BY_TITLE,
     FIND_BY_AUTHOR,
     FIND_BY_GENRE,
-    VIEW_ALL_BOOKS,
+    FIND_ALL_BOOKS,
     REMOVE_BOOK,
     WRONG_REQUEST
 }
