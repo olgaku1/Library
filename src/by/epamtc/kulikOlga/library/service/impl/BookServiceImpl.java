@@ -19,18 +19,18 @@ import static by.epamtc.kulikOlga.library.service.validation.Validator.*;
 
 public class BookServiceImpl implements BookService {
     private CurrentUser currentUser;
-    private Validator validator;
+    private Validator validator = new Validator();
 
 
     @Override
     public void addNewBook(String title, String author, String genre) throws ServiceException {
-        if (!isValidTitle(title)) {
+        if (!validator.isValidTitle(title)) {
             throw new ServiceException("Incorrect title");
         }
-        if (!isValidAuthor(author)) {
+        if (!validator.isValidAuthor(author)) {
             throw new ServiceException("Incorrect name of author");
         }
-        if (!isValidGenre(genre)) {
+        if (!validator.isValidGenre(genre)) {
             throw new ServiceException("Incorrect name of genre");
         }
         if (isCorrectUserRole()) {
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findBookByTitle(String title) throws ServiceException {
-        if (!isValidTitle(title)) {
+        if (!validator.isValidTitle(title)) {
             throw new ServiceException("Incorrect title");
         }
         List<Book> result = new ArrayList<>();
@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findBookByAuthor(String author) throws ServiceException {
-        if (!isValidAuthor(author)) {
+        if (!validator.isValidAuthor(author)) {
             throw new ServiceException("Incorrect name of author");
         }
         List<Book> result = new ArrayList<>();
@@ -83,7 +83,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findBookByGenre(String genre) throws ServiceException {
-        if (!isValidGenre(genre)) {
+        if (!validator.isValidGenre(genre)) {
             throw new ServiceException("Incorrect name of genre");
         }
         List<Book> result = new ArrayList<>();
@@ -152,13 +152,13 @@ public class BookServiceImpl implements BookService {
         if (!isValidBookID(bookID)) {
             throw new ServiceException("Incorrect id form");
         }
-        if (!isValidTitle(newTitle)) {
+        if (!validator.isValidTitle(newTitle)) {
             throw new ServiceException("Incorrect title");
         }
-        if (!isValidAuthor(newAuthor)) {
+        if (!validator.isValidAuthor(newAuthor)) {
             throw new ServiceException("Incorrect author name");
         }
-        if (!isValidGenre(newGenre)) {
+        if (!validator.isValidGenre(newGenre)) {
             throw new ServiceException("Incorrect name of genre");
         }
         if (isCorrectUserRole()) {

@@ -16,24 +16,24 @@ import static by.epamtc.kulikOlga.library.service.impl.CurrentUser.isCorrectUser
 import static by.epamtc.kulikOlga.library.service.validation.Validator.*;
 
 public class UserServiceImpl implements UserService {
-   private Validator validator;
+   private Validator validator = new Validator();
    private CurrentUser currentUser;
 
     @Override
     public void registration(String login, String password, String name, String surname, String userRole) throws ServiceException {
-        if (!isValidLogin(login)) {
+        if (!validator.isValidLogin(login)) {
             throw new ServiceException("Incorrect login form");
         }
-        if (!isValidPassword(password)) {
+        if (!validator.isValidPassword(password)) {
             throw new ServiceException("Incorrect password form");
         }
-        if (!isValidName(name)) {
+        if (!validator.isValidName(name)) {
             throw new ServiceException("Incorrect name");
         }
-        if (!isValidSurname(surname)) {
+        if (!validator.isValidSurname(surname)) {
             throw new ServiceException("Incorrect surname");
         }
-        if(!isValidUserRole(userRole)) {
+        if(!validator.isValidUserRole(userRole)) {
             throw new ServiceException("Incorrect user role form");
         }
 
@@ -59,10 +59,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signIn(String login, String password) throws ServiceException {
-        if (!isValidLogin(login)) {
+        if (!validator.isValidLogin(login)) {
             throw new ServiceException("Incorrect login form");
         }
-        if (!isValidPassword(password)) {
+        if (!validator.isValidPassword(password)) {
             throw new ServiceException("Incorrect password form");
         }
 
