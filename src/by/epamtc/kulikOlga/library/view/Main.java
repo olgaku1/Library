@@ -9,7 +9,7 @@ public class Main {
         String request;
         String response;
         System.out.println("Hello! To work with the electronic library, you need to log in.\n" +
-                "Please, enter the name of the command and the required information separated by a /");
+                "Please, enter the name of the command and the required information separated by a \"/\"");
         Scanner scanner = new Scanner(System.in);
         Controller controller = new Controller();
 
